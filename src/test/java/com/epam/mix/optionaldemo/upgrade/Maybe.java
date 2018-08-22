@@ -1,4 +1,4 @@
-package com.epam.mix.optionaldemo.maybe;
+package com.epam.mix.optionaldemo.upgrade;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
