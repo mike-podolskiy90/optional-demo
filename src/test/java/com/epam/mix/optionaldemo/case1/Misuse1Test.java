@@ -17,6 +17,14 @@ public class Misuse1Test {
         }
     }
 
+    private Optional<String> misuse2() {
+        if (stringService.getString().isPresent()) {
+            return Optional.ofNullable(stringService.getString().get().concat(" concat"));
+        } else {
+            return Optional.empty();
+        }
+    }
+
     private void useProperly() {
         Optional<String> str = stringService.getString();
         str.ifPresent(System.out::println);
