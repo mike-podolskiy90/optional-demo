@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
 
+@SuppressWarnings("ALL")
 public class Misuse3Test {
 
     private Optional<String> misuse() {
