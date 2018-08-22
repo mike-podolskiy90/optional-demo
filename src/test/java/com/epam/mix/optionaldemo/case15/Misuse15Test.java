@@ -1,32 +1,83 @@
 package com.epam.mix.optionaldemo.case15;
 
-import com.epam.mix.optionaldemo.case15.objects.Income;
+import com.epam.mix.optionaldemo.case15.objects.Transfer;
 import com.epam.mix.optionaldemo.case15.objects.Man;
-import com.epam.mix.optionaldemo.case15.objects.StuffService;
+import com.epam.mix.optionaldemo.case15.objects.StaffService;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 public class Misuse15Test {
 
-    private StuffService stuffService;
+    private StaffService staffService;
 
     @Before
-    public void setUp() throws Exception {
-        stuffService = new StuffService();
+    public void setUp() {
+        staffService = new StaffService();
     }
 
-    private Optional<Long> misuse() {
-        List<Man> paymentSchedules = stuffService.getStuff();
-        if (!paymentSchedules.isEmpty()) {
+    private Optional<Integer> misuse() {
+        List<Man> staff = staffService.getStaff();
+
+        if (!staff.isEmpty()) {
             return Optional.ofNullable(
-                    paymentSchedules.get(paymentSchedules.size() - 1).getSalary()
+                    staff.get(staff.size() - 1).getSalary()
                             .stream()
-                            .map(Income::getAmount)
-                            .reduce(0L, (a, b) -> a + b));
+                            .map(Transfer::getAmount)
+                            .reduce(0, (a, b) -> a + b));
         } else {
             return Optional.empty();
         }
+    }
+
+    private Optional<Integer> misuseButBetter() {
+        List<Man> staff = staffService.getStaff();
+
+        if (!staff.isEmpty()) {
+            return staff.get(staff.size() - 1).getSalary()
+                            .stream()
+                            .map(Transfer::getAmount)
+                            .reduce((a, b) -> a + b);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Integer> useProperly() {
+        List<Man> staff = staffService.getStaff();
+
+        return getLast(staff)
+                .map(Man::getSalary)
+                .map(this::calculateIncome);
+    }
+
+    private <T> Optional<T> getLast(List<T> list) {
+        if (list.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(list.get(list.size() - 1));
+    }
+
+    private Integer calculateIncome(List<Transfer> transferList) {
+        return transferList.stream()
+                .map(Transfer::getAmount)
+                .reduce(0, (amount1, amount2) -> amount1 + amount2);
+    }
+
+    @Test
+    public void test_case15_misuse() {
+        // WHEN
+        Optional<Integer> actual = misuse();
+
+        // THEN
+        assertTrue(actual.isPresent());
+        assertThat(actual.get(), is(100));
     }
 }

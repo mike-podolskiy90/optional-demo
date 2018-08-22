@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Income {
+public class Transfer {
 
-    private Long amount;
+    private Integer amount;
 
-    public static Income of(Long amount) {
-        return new Income(amount);
+    public static Transfer of(Integer amount) {
+        return new Transfer(amount);
     }
 }
