@@ -62,12 +62,14 @@ public class Maybe<T> {
         return this;
     }
 
-    public void ifPresentOrElse(final @NotNull Consumer<? super T> action, final @NotNull Runnable emptyAction) {
+    public Maybe<T> ifPresentOrElse(final @NotNull Consumer<? super T> action, final @NotNull Runnable emptyAction) {
         if (value != null) {
             action.accept(value);
         } else {
             emptyAction.run();
         }
+
+        return this;
     }
 
     public @NotNull Maybe<T> filter(final @NotNull Predicate<? super T> predicate) {
