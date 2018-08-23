@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class ConnectionService {
 
-    public Optional<String> badConnect() {
+    public Optional<String> untrustedConnection() {
         return Optional.empty();
     }
 
@@ -14,11 +14,4 @@ public class ConnectionService {
         return Optional.of("good connection!");
     }
 
-    public List<Optional<String>> getConnections() {
-        return Arrays.asList(
-                Optional.of("connection 1"),
-                Optional.ofNullable(null),
-                Optional.of("connection 2")
-        );
-    }
 }
