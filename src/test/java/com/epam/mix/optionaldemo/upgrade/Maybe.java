@@ -36,7 +36,7 @@ public class Maybe<T> {
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static <T> @NotNull Maybe<T> ofOptional(final @NotNull Optional<T> optValue) {
+    public static <T> @NotNull Maybe<T> of(final @NotNull Optional<T> optValue) {
         return optValue.map(Maybe::of)
                 .orElseGet(Maybe::empty);
     }
@@ -46,16 +46,20 @@ public class Maybe<T> {
                 .orElseGet(Optional::empty);
     }
 
-    public void ifPresent(final @NotNull Consumer<? super T> consumer) {
+    public Maybe<T> ifPresent(final @NotNull Consumer<? super T> consumer) {
         if (value != null) {
             consumer.accept(value);
         }
+
+        return this;
     }
 
-    public void ifAbsent(final @NotNull Runnable emptyAction) {
+    public Maybe<T> ifAbsent(final @NotNull Runnable emptyAction) {
         if (value == null) {
             emptyAction.run();
         }
+
+        return this;
     }
 
     public void ifPresentOrElse(final @NotNull Consumer<? super T> action, final @NotNull Runnable emptyAction) {
