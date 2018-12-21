@@ -1,8 +1,9 @@
 package com.epam.mix.optionaldemo.case15;
 
-import com.epam.mix.optionaldemo.case15.objects.Transfer;
 import com.epam.mix.optionaldemo.case15.objects.Man;
 import com.epam.mix.optionaldemo.case15.objects.StaffService;
+import com.epam.mix.optionaldemo.case15.objects.Transfer;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,11 +59,9 @@ public class Misuse15Test {
     }
 
     private <T> Optional<T> getLast(List<T> list) {
-        if (list.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(list.get(list.size() - 1));
+        return Optional.of(list)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(listParam -> listParam.get(listParam.size() - 1));
     }
 
     private Integer calculateIncome(List<Transfer> transferList) {
@@ -74,7 +73,7 @@ public class Misuse15Test {
     @Test
     public void test_case15_misuse() {
         // WHEN
-        Optional<Integer> actual = misuse();
+        Optional<Integer> actual = useProperly();
 
         // THEN
         assertTrue(actual.isPresent());
